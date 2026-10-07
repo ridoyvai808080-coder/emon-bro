@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#087f5b">
+<title>Emon Top Up</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-orb orb1"></div><div class="bg-orb orb2"></div>
+
+<section id="loginPage" class="page">
+  <div class="auth-shell">
+    <div class="brand-big"><span>ET</span></div>
+    <h1>Emon <em>Top Up</em></h1>
+    <p class="sub">Fast • Secure • Easy Game Top-Up</p>
+
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="tab active" onclick="showLogin('google')">Gmail</button>
+        <button class="tab" onclick="showLogin('phone')">Phone</button>
+      </div>
+
+      <div id="googleBox">
+        <button class="google-btn" onclick="googleLogin()"><span class="google-g">G</span> Continue with Google</button>
+        <p class="tiny">আপনার Google account দিয়ে একই account-এ আবার login করতে পারবেন।</p>
+      </div>
+
+      <div id="phoneBox" class="hidden">
+        <label>Phone Number</label>
+        <div class="phone-row"><span>+880</span><input id="phone" inputmode="numeric" placeholder="1XXXXXXXXX" maxlength="10"></div>
+        <button class="main-btn" onclick="sendOTP()">Send OTP</button>
+        <div id="otpBox" class="hidden">
+          <label>OTP Code</label>
+          <input id="otp" inputmode="numeric" placeholder="6-digit OTP" maxlength="6">
+          <button class="main-btn" onclick="verifyOTP()">Verify & Login</button>
+        </div>
+        <p class="tiny">Phone login-এর জন্য Firebase Phone Authentication চালু করতে হবে।</p>
+      </div>
+      <div id="authStatus" class="status"></div>
+    </div>
+  </div>
+</section>
+
+<section id="homePage" class="page">
+<header class="topbar">
+  <div class="brand"><div class="brand-mini">ET</div><div><b>Emon</b><small>TOP UP</small></div></div>
+  <div class="user-area"><span id="userName"></span><button onclick="logout()">Logout</button></div>
+</header>
+<main class="container">
+  <div class="hero">
+    <div><span class="pill">⚡ INSTANT ORDER</span><h2>Game Top-Up, সহজেই।</h2><p>আপনার পছন্দের game নির্বাচন করুন এবং কয়েকটি ধাপেই order করুন।</p></div>
+    <div class="hero-icon">🎮</div>
+  </div>
+
+  <div class="section-head"><div><h2>New Game Top-Up</h2><p>Choose a service</p></div></div>
+  <div class="game-grid">
+    <button class="game-card" onclick="openGame('Free Fire ID Code','🔥')"><span>🔥</span><b>Free Fire ID Code</b><small>Diamond Top Up</small><i>→</i></button>
+    <button class="game-card" onclick="openGame('FF UniPin','💎')"><span>💎</span><b>FF UniPin</b><small>Garena / UniPin</small><i>→</i></button>
+    <button class="game-card" onclick="openGame('Free Fire 200 Like','❤️')"><span>❤️</span><b>Free Fire 200 Like</b><small>Social service</small><i>→</i></button>
+    <button class="game-card" onclick="openGame('Evo Access','⚡')"><span>⚡</span><b>Evo Access</b><small>Game service</small><i>→</i></button>
+    <button class="game-card" onclick="openGame('New Level Up Pass','🎫')"><span>🎫</span><b>New Level Up Pass</b><small>Pass service</small><i>→</i></button>
+    <button class="game-card" onclick="openGame('PUBG Mobile UC','🎮')"><span>🎮</span><b>PUBG Mobile UC</b><small>UC Top Up</small><i>→</i></button>
+  </div>
+
+  <div class="trust-grid">
+    <div><strong>🔒</strong><b>Secure Login</b><small>Gmail / Phone</small></div>
+    <div><strong>💳</strong><b>Easy Payment</b><small>bKash / Nagad</small></div>
+    <div><strong>📲</strong><b>WhatsApp Support</b><small>Order assistance</small></div>
+  </div>
+
+  <div class="rules"><h3>📜 Rules & Conditions</h3>
+    <p>• Player ID বা প্রয়োজনীয় তথ্য সঠিকভাবে দিন।</p>
+    <p>• Payment করার পর সঠিক Transaction ID দিন।</p>
+    <p>• ভুল তথ্য দিলে order সম্পন্ন হতে সমস্যা হতে পারে।</p>
+    <p>• Buy Now চাপলে WhatsApp খুলবে; message customer নিজে Send করবে।</p>
+  </div>
+</main>
+</section>
+
+<section id="orderPage" class="page">
+<header class="topbar">
+  <button class="back" onclick="goHome()">←</button>
+  <div class="brand"><div class="brand-mini">ET</div><div><b>Emon</b><small>TOP UP</small></div></div><div></div>
+</header>
+<main class="container order-container">
+  <div class="order-title"><div id="gameIcon">🎮</div><div><h2 id="gameTitle">Game</h2><p>Complete your order below</p></div></div>
+
+  <div class="step"><span>1</span><div class="step-content"><h3>Player Information</h3><label id="playerLabel">Player ID</label><input id="playerId" placeholder="Player ID লিখুন"></div></div>
+
+  <div class="step"><span>2</span><div class="step-content"><h3>Select Package</h3><div id="packages" class="packages"></div></div></div>
+
+  <div class="step"><span>3</span><div class="step-content"><h3>Select Payment</h3>
+    <div class="pay-grid">
+      <button id="bkashBtn" class="pay-btn" onclick="selectPayment('bKash')"><b>💗 bKash</b><small>01344839207</small></button>
+      <button id="nagadBtn" class="pay-btn" onclick="selectPayment('Nagad')"><b>🟠 Nagad</b><small>01960261023</small></button>
+    </div>
+    <div class="pay-info">Payment করার পর Transaction ID দিন</div>
+    <input id="trxId" placeholder="Enter Transaction ID">
+  </div></div>
+
+  <div class="summary"><h3>Order Summary</h3>
+    <div><span>Game</span><b id="sumGame">—</b></div>
+    <div><span>Package</span><b id="sumPackage">—</b></div>
+    <div><span>Amount</span><b id="sumAmount">৳0</b></div>
+    <div><span>Payment</span><b id="sumPayment">—</b></div>
+  </div>
+  <button class="main-btn buy" onclick="buyNow()">Buy Now & Continue to WhatsApp</button>
+  <div class="rules small-rules"><h3>Order Rules</h3><p>তথ্য যাচাই করে Submit করুন। WhatsApp নিজে থেকে Send করবে না।</p></div>
+</main>
+</section>
+
+<script type="module" src="app.js"></script>
+</body></html>
